@@ -1,3 +1,15 @@
+#' recapture info
+#'
+#' @param ring the ring numer
+#'
+#' @return a dataframe with 1 more observation & prints information about previous captures
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' re(123)
+#'  }
+
 re <- function(ring) {
 
   ring <- deparse(substitute(ring))
@@ -8,9 +20,11 @@ re <- function(ring) {
 
     installr::ask.user.yn.question("your ring number is shorter or longer than usual, do you want to continue?",
                     GUI = FALSE) -> answer
+
+    if(answer!=TRUE){ stop()
   }
 
-  if(answer==TRUE){
+
 
   cmr_filter <- dplyr::filter(cmr,ring_id == ring)
 
@@ -21,7 +35,7 @@ re <- function(ring) {
 
   last_capture <- dplyr::slice_tail(cmr_filter,n=1)
 
-  message("Last capture:",dplyr::pull(first_capture,date))
+  message("Last capture:",dplyr::pull(first_capture,date),dplyr::pull(first_capture,time))
 
   overall_captures <- nrow(cmr_filter)
 
@@ -34,8 +48,8 @@ re <- function(ring) {
   sex
 
   blood <- cmr_filter %>%
-     group_by(year) %>%
-    count(blood_infection)
+    dplyr::group_by(year) %>%
+    dplyr::count(blood_infection)
 
   message("\nhad_blood_infection:")
 
@@ -49,13 +63,12 @@ re <- function(ring) {
 
   new_observation[1,]$ring_id <- ring
 
-  cmr_added <- bind_rows(cmr,new_observation)
+  cmr_added <- dplyr::bind_rows(cmr,new_observation)
 
   cmr <<- cmr_added
 
 }}
 
-re(123
-   )
+
 
 
