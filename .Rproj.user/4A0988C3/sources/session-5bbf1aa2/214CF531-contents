@@ -12,11 +12,10 @@ RoxygenNote: 7.2.3
 Imports: 
     magrittr,
     dplyr,
-    readr,
-    usethis,
-    installr
+    hms,
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Depends: 
     R (>= 2.10)
+License: MIT + file LICENSE

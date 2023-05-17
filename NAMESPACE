@@ -2,4 +2,8 @@
 
 export("%>%")
 export(re)
+importFrom(dplyr,bind_rows)
+importFrom(dplyr,filter)
+importFrom(dplyr,select)
+importFrom(hms,as_hms)
 importFrom(magrittr,"%>%")

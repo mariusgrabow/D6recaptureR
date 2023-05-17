@@ -1,0 +1,303 @@
+re <- function(ring) {
+ring <- deparse(substitute(VH590))
+ring <- toupper(ring)
+cmr_filter <- dplyr::filter(cmr,ring_id == ring)
+first_capture <- dplyr::slice_head(cmr_filter,n=1)%>%
+pull(date)
+last_capture <- dplyr::slice_tail(cmr_filter,n=1)%>%
+pull(date)
+overall_captures <- nrow(cmr_filter)
+sex <- dplyr::count(cmr_filter,sex)
+blood <- cmr_filter %>%
+dplyr::group_by(year) %>%
+dplyr::count(blood_infection)
+message("\nhad_blood_infection:")
+blood
+# put in new observation
+new_observation <- cmr[FALSE,]
+new_observation[1,]$time <- Sys.time()
+new_observation[1,]$ring_id <- ring
+cmr_added <- dplyr::bind_rows(cmr,new_observation)
+cmr <<- cmr_added
+}
+cmr <- readRDS("C:/Users/mariu/Nextcloud/Projects/biomove_swallow_martin_de_atlas_grabow_m/output/data-proc/cmr_pathogens.RDS")
+re(VH59051)
+library("tidyverse")
+re(VH59051)
+ring=VH59051
+ring<-"VH59051"
+cmr_filter <- dplyr::filter(cmr,ring_id == ring)
+first_capture <- dplyr::slice_head(cmr_filter,n=1)%>%
+pull(date)
+last_capture <- dplyr::slice_tail(cmr_filter,n=1)%>%
+pull(date)
+overall_captures <- nrow(cmr_filter)
+sex <- dplyr::count(cmr_filter,sex)
+View(sex)
+View(sex)
+blood <- cmr_filter %>%
+dplyr::group_by(year) %>%
+dplyr::count(blood_infection)
+View(blood)
+df <- data.frame(
+c("first capture","last capture"),
+c(first_capture,last_capture)
+)
+View(df)
+df <- data.frame(
+c("first capture","last capture"),
+c(first_capture,last_capture),
+row.names = FALSE
+)
+df <- data.frame(
+c("first capture","last capture"),
+c(first_capture,last_capture),
+row.names = FALSE
+)
+df <- data.frame(
+"first capture","last capture",
+c(first_capture,last_capture),
+row.names = FALSE
+)
+df <- data.frame(
+"first capture","last capture",
+c(first_capture,last_capture),
+)
+df <- data.frame(
+"first capture","last capture",
+c(first_capture,last_capture),
+)
+df <- data.frame(c("first capture","last capture")
+)
+View(df)
+df <- data.frame(
+c("first capture","last capture"),
+c(first_capture,last_capture),
+)
+df <- data.frame(
+c("first capture","last capture"),
+c(first_capture,last_capture)
+)
+View(df)
+df <- data.frame(
+A=c("first capture","last capture"),
+B=c(first_capture,last_capture)
+)
+View(df)
+df <- data.frame(
+Event=c("first capture","last capture"),
+Result=c(first_capture,last_capture)
+)
+return(df)
+print(df)
+df <- data.frame(
+Event=c("first capture",
+"last capture",
+"total captures"),
+Result=c(first_capture,
+last_capture,
+overall_captures)
+)
+View(df)
+overall_captures <- nrow(cmr_filter)
+df <- data.frame(
+Event=c("first capture",
+"last capture",
+"total captures"),
+Result=c(first_capture,
+last_capture,
+overall_captures)
+)
+View(df)
+df <- tibble(
+Event=c("first capture",
+"last capture",
+"total captures"),
+Result=c(first_capture,
+last_capture,
+overall_captures)
+)
+View(df)
+print(df)
+overall_captures
+df <- tibble(
+Event=c("first capture",
+"last capture",
+"total captures"),
+Result=c(first_capture,
+last_capture,
+as.numeric(overall_captures))
+)
+print(df)
+str(df)
+print(cmr_filter)
+cmr_filter <- dplyr::filter(cmr,ring_id == ring)%>%
+keep(date,time,ring_id,sex,weight_g,blood_infection,infection_type)
+cmr_filter <- dplyr::filter(cmr,ring_id == ring)%>%
+keep(date,time,ring_id,sex,weight_g,blood_infection,infection_type)
+cmr_filter <- dplyr::filter(cmr,ring_id == ring)%>%
+keep(date,time,sex,weight_g,blood_infection,infection_type)
+cmr_filter <- dplyr::filter(cmr,ring_id == ring)%>%
+select(date,time,sex,weight_g,blood_infection,infection_type)
+View(cmr_filter)
+print(cmr_filter)
+re(VH59051)
+re <- function(ring) {
+ring <- deparse(substitute(VH590))
+ring <- toupper(ring)
+cmr_filter <- dplyr::filter(cmr,ring_id == ring)%>%
+select(date,time,sex,weight_g,blood_infection,infection_type)
+print(cmr_filter)
+# put in new observation
+new_observation <- cmr[FALSE,]
+new_observation[1,]$time <- Sys.time()
+new_observation[1,]$ring_id <- ring
+cmr_added <- dplyr::bind_rows(cmr,new_observation)
+cmr <<- cmr_added
+message("observation was added to cmr")
+}
+re(VH59051)
+re <- function(ring) {
+ring <- deparse(substitute(VH590))
+ring <- toupper(ring)
+cmr_filter <- dplyr::filter(cmr,ring_id == ring)%>%
+select(date,time,sex,weight_g,blood_infection,infection_type)
+return(cmr_filter)
+# put in new observation
+new_observation <- cmr[FALSE,]
+new_observation[1,]$time <- Sys.time()
+new_observation[1,]$ring_id <- ring
+cmr_added <- dplyr::bind_rows(cmr,new_observation)
+cmr <<- cmr_added
+message("observation was added to cmr")
+}
+re(VH59051)
+View(cmr_filter)
+re <- function(ring) {
+ring <- deparse(substitute(VH590))
+ring <- toupper(ring)
+cmr_filter <- dplyr::filter(cmr,ring_id == ring)%>%
+select(date,time,sex,weight_g,blood_infection,infection_type)
+print(cmr_filter,n = Inf)
+# put in new observation
+new_observation <- cmr[FALSE,]
+new_observation[1,]$time <- Sys.time()
+new_observation[1,]$ring_id <- ring
+cmr_added <- dplyr::bind_rows(cmr,new_observation)
+cmr <<- cmr_added
+message("observation was added to cmr")
+}
+re(VH59051)
+ring <- deparse(substitute(ring))
+re <- function(ring) {
+ring <- deparse(substitute(ring))
+ring <- toupper(ring)
+cmr_filter <- dplyr::filter(cmr,ring_id == ring)%>%
+select(date,time,sex,weight_g,blood_infection,infection_type)
+print(cmr_filter,n = Inf)
+# put in new observation
+new_observation <- cmr[FALSE,]
+new_observation[1,]$time <- Sys.time()
+new_observation[1,]$ring_id <- ring
+cmr_added <- dplyr::bind_rows(cmr,new_observation)
+cmr <<- cmr_added
+message("observation was added to cmr")
+}
+re(VH59051)
+re <- function(ring) {
+ring <- deparse(substitute(ring))
+ring <- toupper(ring)
+cmr_filter <- dplyr::filter(cmr,ring_id == ring)%>%
+select(date,time,sex,weight_g,blood_infection,infection_type)
+print(cmr_filter,n = Inf)
+# put in new observation
+new_observation <- cmr[FALSE,]
+new_observation[1,]$time <- Sys.time()
+new_observation[1,]$ring_id <- ring
+cmr_added <- dplyr::bind_rows(cmr,new_observation)
+cmr <<- cmr_added
+message("\n\n\nobservation was added to cmr")
+}
+re(VH59051)
+re <- function(ring) {
+ring <- deparse(substitute(ring))
+ring <- toupper(ring)
+cmr_filter <- dplyr::filter(cmr,ring_id == ring)%>%
+select(date,time,sex,weight_g,blood_infection,infection_type)
+print(cmr_filter,n = Inf)
+# put in new observation
+new_observation <- cmr[FALSE,]
+new_observation[1,]$time <- Sys.time()
+new_observation[1,]$ring_id <- ring
+cmr_added <- dplyr::bind_rows(cmr,new_observation)
+cmr <<- cmr_added
+message("\nobservation was added to cmr")
+}
+re(VH59051)
+re(VH59051)
+re(VH59051)
+Sys.Date()
+re <- function(ring) {
+ring <- deparse(substitute(ring))
+ring <- toupper(ring)
+cmr_filter <- dplyr::filter(cmr,ring_id == ring)%>%
+select(date,time,sex,weight_g,blood_infection,infection_type)
+print(cmr_filter,n = Inf)
+# put in new observation
+new_observation <- cmr[FALSE,]
+new_observation[1,]$date <- Sys.Date()
+new_observation[1,]$time <- Sys.time()
+new_observation[1,]$ring_id <- ring
+cmr_added <- dplyr::bind_rows(cmr,new_observation)
+cmr <<- cmr_added
+message("\nobservation was added to cmr")
+}
+re(VH59051)
+re(VH59051)
+library("tidyverse")
+library("here")
+library("lubridate")
+library("kableExtra")
+conflicted::conflict_prefer("select","dplyr")
+conflicted::conflict_prefer("filter", "dplyr")
+cmr_filter<-readRDS(here("output",
+"data-proc",
+"cmr_swallows.RDS"))
+re(VH59051)
+cmr <- readRDS("C:/Users/mariu/Nextcloud/Projects/biomove_swallow_martin_de_atlas_grabow_m/output/data-proc/cmr_pathogens.RDS")
+re(VH59051)
+library(D6recaptureR)
+usethis::use_data(cmr_filter)
+sinew::makeOxygen(cmr_filter, add_fields = "source")
+install.packages("sinew")
+sinew::makeOxygen(cmr_filter, add_fields = "source")
+library(D6recaptureR)
+usethis::use_testthat()
+use_test()
+usethis::use_test()
+sinew::makeOxygen(re)
+devtools::document()
+rm(list = c("re"))
+devtools::document()
+library(D6recaptureR)
+library(D6recaptureR)
+cmr<-D6recaptureR::cmr_filter
+re(vh59051)
+re(vh59051)
+cmr<-D6recaptureR::cmr_filter
+re(vh59051)
+lubridate::strptime(Sys.time, format = "%H:%M:%S")
+strptime(Sys.time, format = "%H:%M:%S")
+strptime(Sys.time(), format = "%H:%M:%S")
+Sys.time()
+lubridate::now()
+today()
+lubridate::now()%>%lubridate::hms()
+lubridate::hms("2023-05-17 09:32:44 CEST")
+lubridate::hms("2023-05-17 09:32:44 CEST)
+as_hms(now())
+lubridate::as_hms
+?v
+?str_split
+sinew
+sinew::makeOxygen()

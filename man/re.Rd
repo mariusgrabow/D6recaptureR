@@ -2,21 +2,29 @@
 % Please edit documentation in R/re.R
 \name{re}
 \alias{re}
-\title{recapture info}
+\title{recapture}
 \usage{
 re(ring)
 }
 \arguments{
-\item{ring}{the ring numer}
+\item{ring}{ring_id}
 }
 \value{
-a dataframe with 1 more observation & prints information about previous captures
+dataframe with +1 observation
 }
 \description{
-recapture info
+helps with recaptures
+}
+\details{
+none
 }
 \examples{
 \dontrun{
-re(123)
+if(interactive()){
+ #EXAMPLE1
  }
+}
+}
+\seealso{
+\code{\link[dplyr]{filter}}, \code{\link[dplyr]{select}}, \code{\link[dplyr]{bind}}
 }
