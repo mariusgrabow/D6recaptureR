@@ -45,30 +45,34 @@ history:
 ``` r
 re(vh59051)
 #> Adding missing grouping variables: `ring_id`
-#>    ring_id       date     time sex tars_mm weight_g blood_infection
-#> 1  VH59051 2020-06-06 12:40:00   f    11.5     20.1            <NA>
-#> 2  VH59051 2020-06-06 17:06:00   f    11.5     20.1            <NA>
-#> 3  VH59051 2020-06-06 17:30:00   f    11.5     20.1            <NA>
-#> 4  VH59051 2020-06-17 10:37:00   f    11.5     19.9            <NA>
-#> 5  VH59051 2020-06-17 14:43:00   f    11.5     19.7            <NA>
-#> 6  VH59051 2020-06-17 15:15:00   f    11.5     19.3            <NA>
-#> 7  VH59051 2021-05-26 17:49:00   f    11.0     19.8               y
-#> 8  VH59051 2021-06-07 16:06:00   f    11.5     19.7               y
-#> 9  VH59051 2022-05-26 10:50:00   f    11.4     20.6               n
-#> 10 VH59051 2022-05-26 14:45:00   f    11.3     20.6               n
-#> 11 VH59051 2022-06-09 13:08:00   f    11.3     19.4               n
+#> # A tibble: 11 × 9
+#> # Groups:   ring_id [1]
+#>    ring_id date       time   sex   tars_mm weight_g blood_infection
+#>    <chr>   <date>     <time> <chr>   <dbl>    <dbl> <chr>          
+#>  1 VH59051 2020-06-06 12:40  f        11.5     20.1 <NA>           
+#>  2 VH59051 2020-06-06 17:06  f        11.5     20.1 <NA>           
+#>  3 VH59051 2020-06-06 17:30  f        11.5     20.1 <NA>           
+#>  4 VH59051 2020-06-17 10:37  f        11.5     19.9 <NA>           
+#>  5 VH59051 2020-06-17 14:43  f        11.5     19.7 <NA>           
+#>  6 VH59051 2020-06-17 15:15  f        11.5     19.3 <NA>           
+#>  7 VH59051 2021-05-26 17:49  f        11       19.8 y              
+#>  8 VH59051 2021-06-07 16:06  f        11.5     19.7 y              
+#>  9 VH59051 2022-05-26 10:50  f        11.4     20.6 n              
+#> 10 VH59051 2022-05-26 14:45  f        11.3     20.6 n              
+#> 11 VH59051 2022-06-09 13:08  f        11.3     19.4 n              
 #>    infection_type tag_id
-#> 1            <NA>     NA
-#> 2            <NA>     NA
-#> 3            <NA>     NA
-#> 4            <NA>     NA
-#> 5            <NA>     NA
-#> 6            <NA>     NA
-#> 7    haemoproteus     NA
-#> 8    haemoproteus     NA
-#> 9            none     NA
-#> 10           none     NA
-#> 11           none     NA
+#>    <chr>           <dbl>
+#>  1 <NA>               NA
+#>  2 <NA>               NA
+#>  3 <NA>               NA
+#>  4 <NA>               NA
+#>  5 <NA>               NA
+#>  6 <NA>               NA
+#>  7 haemoproteus       NA
+#>  8 haemoproteus       NA
+#>  9 none               NA
+#> 10 none               NA
+#> 11 none               NA
 #> observation was added into global environment. cmr hat 1 more row now
 ```
 
@@ -91,6 +95,6 @@ dplyr::slice_tail(cmr,n=1)
 #> # Groups:   ring_id [1]
 #>   ring_id date   time            sex   tars_mm weight_g blood_infection
 #>   <chr>   <date> <time>          <chr>   <dbl>    <dbl> <chr>          
-#> 1 VH59051 NA     10:45:09.928695 <NA>       NA       NA <NA>           
+#> 1 VH59051 NA     10:52:55.912993 <NA>       NA       NA <NA>           
 #> # ℹ 2 more variables: infection_type <chr>, tag_id <dbl>
 ```

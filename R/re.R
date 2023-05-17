@@ -26,7 +26,7 @@ re <- function(ring) {
     cmr_filter <- dplyr::filter(cmr,ring_id == ring)%>%
       dplyr::select(date,time,sex,tars_mm,weight_g,blood_infection,infection_type,tag_id)
 
-    print.data.frame(cmr_filter)
+    print(cmr_filter,n=Inf,width=Inf)
 
     # put in new observation
 
