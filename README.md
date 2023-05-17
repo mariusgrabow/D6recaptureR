@@ -45,7 +45,7 @@ history:
 ``` r
 re(vh59051)
 #> Adding missing grouping variables: `ring_id`
-#> # A tibble: 11 × 8
+#> # A tibble: 11 × 9
 #> # Groups:   ring_id [1]
 #>    ring_id date       time   sex   tars_mm weight_g blood_infection
 #>    <chr>   <date>     <time> <chr>   <dbl>    <dbl> <chr>          
@@ -60,7 +60,19 @@ re(vh59051)
 #>  9 VH59051 2022-05-26 10:50  f        11.4     20.6 n              
 #> 10 VH59051 2022-05-26 14:45  f        11.3     20.6 n              
 #> 11 VH59051 2022-06-09 13:08  f        11.3     19.4 n              
-#> # ℹ 1 more variable: infection_type <chr>
+#>    infection_type tag_id
+#>    <chr>           <dbl>
+#>  1 <NA>               NA
+#>  2 <NA>               NA
+#>  3 <NA>               NA
+#>  4 <NA>               NA
+#>  5 <NA>               NA
+#>  6 <NA>               NA
+#>  7 haemoproteus       NA
+#>  8 haemoproteus       NA
+#>  9 none               NA
+#> 10 none               NA
+#> 11 none               NA
 #> observation was added into global environment. cmr hat 1 more row now
 ```
 
@@ -79,10 +91,10 @@ to screen a pile of paper.
 
 ``` r
 dplyr::slice_tail(cmr,n=1)
-#> # A tibble: 1 × 8
+#> # A tibble: 1 × 9
 #> # Groups:   ring_id [1]
 #>   ring_id date   time            sex   tars_mm weight_g blood_infection
 #>   <chr>   <date> <time>          <chr>   <dbl>    <dbl> <chr>          
-#> 1 VH59051 NA     10:23:31.072496 <NA>       NA       NA <NA>           
-#> # ℹ 1 more variable: infection_type <chr>
+#> 1 VH59051 NA     10:41:54.682646 <NA>       NA       NA <NA>           
+#> # ℹ 2 more variables: infection_type <chr>, tag_id <dbl>
 ```

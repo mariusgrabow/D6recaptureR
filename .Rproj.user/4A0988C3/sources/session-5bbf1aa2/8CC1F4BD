@@ -3,7 +3,7 @@
     "path": "C:/Users/mariu/Nextcloud/People/Marius/8_R_packages_developed/D6recaptureR/R/re.R",
     "project_path": "R/re.R",
     "type": "r_source",
-    "hash": "0",
+    "hash": "164208114",
     "contents": "",
     "dirty": false,
     "created": 1684310507398.0,
@@ -12,15 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "26,57",
-        "scrollLine": "16"
+        "cursorPosition": "28,36",
+        "scrollLine": "21"
     },
     "folds": "",
-    "lastKnownWriteTime": 1684310574,
+    "lastKnownWriteTime": 1684312903,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1684310574700,
+    "last_content_update": 1684312903637,
     "read_only": false,
     "read_only_alternatives": []
 }
