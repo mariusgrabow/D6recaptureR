@@ -1,0 +1,269 @@
+---
+title: "BioMove swallows: Data preparation" ## name of your project and
+author: "Marius Grabow" 
+date: "`r Sys.Date()`"
+output: 
+    distill::distill_article:
+        highlight: kate      ## styling of code
+        code_folding: true  ## if `true` you can expand and shrink code chunks
+        toc: true            ## if `true` adds a table of content
+        toc_depth: 2         ## level to be displayed in the table of content
+editor_options: 
+  chunk_output_type: console
+---
+
+-   [**Study area:**]{.ul} **Capture-Recapture Uckermark**
+-   [**Data**]{.ul}**: Dedelow and Kutzerow**
+-   **Script: This script cleans the data from handwritten field sheets which were used during capture and recapture sessions 2019 / 2020 / 2021 / 2022.**
+
+### [1 install packages]{.ul}
+
+```{r packages, message=FALSE,warning=F}
+package.list=c("tidyverse",
+               "here",
+               "wesanderson",
+               "lubridate",
+               "sysfonts",
+               "showtext",
+               "kableExtra")
+
+for (package in package.list) {
+  if (!require(package, character.only=T, quietly=T)) {
+    install.packages(package)
+    library(package, character.only=T)
+  }
+}
+
+font_add_google("Roboto Slab","roboto slab")
+showtext_auto()
+```
+
+### [2 Data]{.ul}
+
+### 2.1 Clean data
+
+1.) create new column for same-day catches of the same individual
+
+2.) create new column for same-year catches of the same individual
+
+3.) create new column for all-time catches of the same individual
+
+4.) In case of a recapture (same individual), but missing data for Tarsus, Wing, Tail, Tail-fork, etc. (body measurements that are not considered to change over time) are taken from the previous (or first) capture that contains this data
+
+5.) Filter data and keep just both swallow species for further analyses
+
+6.) Identify the first occurrence of a bird and assign a minimum age by the time interval from most recent capture and first appearance. In case the bird was captured as an adult (age = a), we assume the minimum age is 1 year (+365 years from first occurrence date)
+
+7.) Include a same-day catch counter (1:n) to identify the first or nth. capture. For capture-recapture analyses, we will need every individual counted just once, important for filtering process later
+
+8.) Include capture history for each individual and capture date (1=captured, 0= not captured)
+
+```{r}
+# List files
+
+files<-dir(here("data-raw"),pattern = "*.csv")
+# Read in CSV files
+data <- files %>%
+  map(~ read_csv(file.path(here("data-raw"), .)))%>%
+  tibble()
+
+# function to clean the CMR scripts
+
+clean_cmr_data<-function(data){
+  mutate(data,date=as.Date(date,"%d/%m/%Y"),
+         species=factor(species))%>%
+  group_by(ring_id)%>%
+  fill(tars_mm,
+       wing_mm,
+       X8prim_mm,
+       fat,
+       muscle,
+       tail_mm,
+       tail_fork_mm,
+       weight_g,
+       blood,
+       faeces,
+       cloaca,
+       choane,
+       ectoparasites,
+       comments,
+       .direction="downup")%>%
+  mutate(catch_nr_same_year=n())%>%
+  group_by(ring_id,date)%>%
+  mutate(catch_nr_same_day=n())%>%
+  ungroup()
+}
+
+# read single data frames and apply funtion for cleaning the data frames
+
+cmr_2019<-clean_cmr_data(data.frame(data[1,,drop=T]))
+cmr_2020<-clean_cmr_data(data.frame(data[2,,drop=T]))
+cmr_2021<-clean_cmr_data(data.frame(data[3,,drop=T]))
+cmr_2022<-clean_cmr_data(data.frame(data[4,,drop=T]))
+cmr_2023<-clean_cmr_data(data.frame(data[5,,drop=T]))%>%
+  mutate(date=as.Date("2023-05-23"))
+
+#bind years
+
+cmr_all<-bind_rows(cmr_2019, cmr_2020, cmr_2021,cmr_2022,cmr_2023)%>%
+  group_by(ring_id)%>%
+  mutate(catch_nr_all_time=n())%>%
+  ungroup()
+
+
+# Filter, only both swallow species
+# assign a minimum age
+# correct errors in recapture assignment, every released bird is here marked as released, but if the same ring_id already exists from the years before, marked as recaptured.
+  
+cmr_filter<-cmr_all%>%
+  mutate(date=ymd(date))%>%
+  #filter just both swallow species
+  dplyr::filter(species=="RS"|species=="MS")%>%
+  group_by(ring_id)%>%
+  # assign first capture date and minimum age of animal
+  mutate(first_occurence=ymd(min(date)),
+         min_age=as.numeric(date-first_occurence))%>%
+  # manually replace recapture history if the bird was captured before
+  group_by(ring_id)%>%
+  mutate(ring_recap=replace(ring_recap, row_number() > 1, "y"))%>%
+  ungroup()%>%
+  # Cumulative capture counter for each day
+  mutate(year=year(date))%>%
+  group_by(ring_id,date)%>%
+  mutate(cumulative_capture_counter_day=row_number())%>%
+  ungroup()%>%
+  # Assign capture histories
+  group_by(ring_id)%>%
+  mutate(c_2019=if_else(year==2019,1,0),
+         c_2019=na_if(c_2019,0),
+         c_2020=if_else(year==2020 & date=="2020-06-06" | date=="2020-06-07",1,0),
+         c_2020=na_if(c_2020,0),
+         r_2020=if_else(year==2020 & date=="2020-06-16" | date=="2020-06-17",1,0),
+         r_2020=na_if(r_2020,0),
+         c_2021=if_else(year==2021 & date=="2021-05-25" | date=="2021-05-26" 
+                        | date=="2021-05-27",1,0),
+         c_2021=na_if(c_2021,0),
+         r_2021=if_else(year==2021 & date=="2021-06-07" | date=="2021-06-08",1,0),
+         r_2021=na_if(r_2021,0),
+         c_2022=if_else(year==2022 & date=="2022-05-26" | date=="2022-05-27",1,0),
+         c_2022=na_if(c_2022,0),
+         r_2022=if_else(year==2022 & date=="2022-06-09" | date=="2022-06-10",1,0),
+         r_2022=na_if(r_2022,0),
+         )%>%
+  fill(c_2019,c_2020,r_2020,c_2021,r_2021,c_2022,r_2022,.direction = "updown")%>%
+  ungroup()%>%
+  mutate(c_2019=replace_na(c_2019,0),
+         c_2020=replace_na(c_2020,0),
+         r_2020=replace_na(r_2020,0),
+         c_2021=replace_na(c_2021,0),
+         r_2021=replace_na(r_2021,0),
+         c_2022=replace_na(c_2022,0),
+         r_2022=replace_na(r_2022,0)
+         )%>%
+  mutate(type=case_when(
+    year == 2019 ~ "capture_2019",
+    date == "2020-06-06"|
+    date == "2020-06-07"~ "capture_2020",
+    date == "2020-06-16"|
+    date == "2020-06-17"~ "recapture_2020",
+    date == "2021-05-25"|
+    date == "2021-05-26"|
+    date == "2021-05-27"~ "capture_2021",
+    date == "2021-06-07"|
+    date == "2021-06-08"~ "recapture_2021",
+    date == "2022-05-26"|
+    date == "2022-05-27"~ "capture_2022",
+    date == "2022-06-09"|
+    date == "2022-06-10"~ "recapture_2022"
+  ))%>%
+  group_by(ring_id)%>%
+  fill(tars_mm,
+       wing_mm,
+       X8prim_mm,
+       fat,
+       muscle,
+       tail_mm,
+       tail_fork_mm,
+       sex,
+       age,
+       date)%>%
+  mutate(min_age=if_else(age=="a" & min_age < 50,min_age+365,min_age))
+  
+  
+
+
+ # test, if a recapture was accidentally assigned as first-release
+ 
+filter(cmr_filter%>%
+         group_by(ring_id),cumsum(ring_recap == "n") > 1)%>%
+  print()
+
+
+saveRDS(cmr_filter,here("output",
+                        "data-proc",
+                        "cmr_swallows.RDS"))
+    
+```
+
+```{r}
+
+cmr_summary<-cmr_filter%>%
+  filter(cumulative_capture_counter_day==1)%>%
+  group_by(year,species,ring_recap)%>%
+  summarize(n=n())%>%
+  pivot_wider(names_from = ring_recap,
+              names_prefix = "recapture_",
+              values_from = n)%>%
+  kbl() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+                full_width = F,position = "left",font_size = 20)
+
+cmr_summary
+
+
+save_kable(cmr_summary,here("plots","cmr_overview.png"),zoom=2.5)
+
+
+cmr_summary<-cmr_filter%>%
+  mutate(sex=case_when(
+    sex == "f" | sex == "f?" ~ "female",
+    sex == "m" | sex == "m?" ~ "male"
+  ))%>%
+  filter(cumulative_capture_counter_day==1)%>%
+  group_by(year,species,sex)%>%
+  summarize(n=n())%>%
+  kbl() %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+                full_width = F,position = "left",font_size = 20)
+
+ggplot(cmr_summary)+
+  geom_line(aes(x=year,y=n,col=sex),size=3)+
+  facet_grid(~species)
+
+
+```
+
+
+
+
+
+------------------------------------------------------------------------
+
+<details>
+
+<summary>
+
+Session Info
+
+</summary>
+
+```{r sessionInfo}
+## DO NOT REMOVE!
+## We store the settings of your computer and the current versions of the
+## packages used to allow for reproducibility
+Sys.time()
+#git2r::repository() ## uncomment if you are using GitHub
+sessionInfo()
+```
+
+</details>
